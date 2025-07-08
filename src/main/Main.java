@@ -9,7 +9,6 @@ import java.awt.*;
             window.setTitle("2d Adventure");
             window.setLocationRelativeTo(null);
             window.setVisible(true);
-            System.out.println("Iam in master");
         }
     }
 
