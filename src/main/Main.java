@@ -9,6 +9,9 @@ import java.awt.*;
             window.setTitle("2d Adventure");
             window.setLocationRelativeTo(null);
             window.setVisible(true);
+            GamePanel gamePanel = new GamePanel();
+            window.add(gamePanel);
+            window.pack();
         }
     }
 
