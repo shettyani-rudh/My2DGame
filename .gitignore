@@ -1,36 +1,17 @@
-### IntelliJ IDEA ###
+# Compiled class files
+*.class
+
+# IntelliJ output
 out/
-!**/src/main/**/out/
-!**/src/test/**/out/
 
-### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+# VS Code output
 bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-
-### VS Code ###
+# IDE specific files
+.idea/
+*.iml
 .vscode/
 
-### Mac OS ###
+# OS specific
 .DS_Store
-
-# Game-specific files
-saves/
-screenshots/
-user_data/
-logs/
-*.log
+Thumbs.db
