@@ -11,8 +11,7 @@ import javax.swing.*;
             GamePanel gamePanel = new GamePanel();
             window.add(gamePanel);
             window.pack();
-            GamePanel gp = new GamePanel();
-            gp.startGameThread();
+            gamePanel.startGameThread();
         }
     }
 
