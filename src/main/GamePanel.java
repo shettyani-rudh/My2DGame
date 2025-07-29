@@ -36,7 +36,6 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread.start();
     }
 
-    @Override
     // we can also use delta METHOD iam lazy
     /* public void run() {
         long timer = 0;
@@ -75,54 +74,103 @@ public class GamePanel extends JPanel implements Runnable {
 
         }
     } */
-public void run() {
-    double drawInterval = 1000000000 / FPS;
-    double delta = 0;
-    long lastTime = System.nanoTime();
-    long currentTime;
-    long timer = 0;
-    int drawCount = 0;
-    
-    while (gameThread != null) {
-        currentTime = System.nanoTime();
-        delta += (currentTime - lastTime) / drawInterval;
-        timer += (currentTime - lastTime);
-        lastTime = currentTime;
-        
-        if (delta >= 1) {
-            update();
-            repaint();
-            delta--;
-            drawCount++;
-        }
-        
-        if (timer >= 1000000000) {
-            System.out.println("FPS:" + drawCount);
-            drawCount = 0;
-            timer = 0;
-        }
-        
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+
+
+public void run(){
+double drawInterval = (double) 1000000000 /FPS; //16,666,666.666.  1 second = 60 frames
+/* 
+So between each frame:
+Frame 1 → wait 16.67 million nanoseconds → Frame 2                                              
+Frame 2 → wait 16.67 million nanoseconds → Frame 3
+Frame 3 → wait 16.67 million nanoseconds → Frame 4 ... Frame 60; 
+Higher FPS = shorter wait time = smoother animation
+Lower FPS = longer wait time = choppier animation
+*/
+double delta = 0;
+long lastTime = System.nanoTime();
+long currentTime;
+long timer = 0;
+long drawCount = 0;
+
+
+while (gameThread != null) {
+currentTime = System.nanoTime();
+delta += (currentTime - lastTime) / drawInterval;
+timer += (currentTime - lastTime);
+lastTime = currentTime;
+if (delta >= 1) {                                 // "Did 16.67 million nanoseconds pass?" 
+  /*
+  Think of it like cooking:
+Recipe needs 30 minutes
+Check: "Has 30 minutes passed?" = "Is time_passed/30_minutes >= 1?"
+If 15 minutes passed: 15/30 = 0.5 → Not ready
+If 30 minutes passed: 30/30 = 1.0 → Ready
+The "1" means "one complete frame interval has elapsed!" 
+  // 8ms passed (half the time needed)
+delta = 8,000,000 / 16,666,667 = 0.48
+if (delta >= 1) // FALSE - not ready yet
+
+// 16.67ms passed (exactly the time needed)  
+delta = 16,666,667 / 16,666,667 = 1.0
+if (delta >= 1) // TRUE - exactly time for 1 frame!
+
+// 33ms passed (double the time needed)
+delta = 33,000,000 / 16,666,667 = 2.0  
+if (delta >= 1) // TRUE - time for 2 frames!
+  
+  */          
+                                            
+     update();                                   // YES! Do the frame update
+     repaint();                                // Show the frame  
+     delta --;   
+     drawCount ++;                            // Reset and start counting again
 }
+if (timer >= 1000000000){
+    System.out.println("FPS" + drawCount);
+    drawCount = 0;  // Reset counter!
+    timer = 0;      // Reset timer!
+}
+}
+} 
+/* while(gameThread != null) {
+Loop 1:
 
+Time 0ms: update() runs → Game logic updates (maybe takes 2ms)
+Time 2ms: repaint() runs → Screen draws (maybe takes 3ms)
+Time 5ms: Thread.sleep(16) → Program STOPS and waits
+Time 21ms: Sleep ends, back to loop start
+
+Loop 2:
+
+Time 21ms: update() runs → Game logic updates again
+Time 23ms: repaint() runs → Screen draws again
+Time 26ms: Thread.sleep(16) → Program STOPS again
+Time 42ms: Sleep ends, back to loop start
+
+Loop 3:
+
+Time 42ms: Next cycle starts..
+    update();
+    repaint();
+    try {
+        Thread.sleep((long) 16);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    } // Sleep for 16ms
+}
+} */
     public void update() {
-
-        if (keyH.upPressed == true) {
+        if (keyH.upPressed) {
             playerY -= playerSpeed;
         }
-        if (keyH.downPressed == true) {
+        if (keyH.downPressed) {
             playerY += playerSpeed;
         }
-        if (keyH.rightPressed == true) {
+        if (keyH.rightPressed) {
             playerX += playerSpeed;
         }
 
-        if (keyH.leftPressed == true) {
+        if (keyH.leftPressed) {
             playerX -= playerSpeed;
         }
 
