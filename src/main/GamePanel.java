@@ -36,7 +36,7 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread.start();
     }
 
-    // we can also use delta METHOD iam lazy
+    // we can also use delta METHOD 
     /* public void run() {
         long timer = 0;
         int drawCount = 0;
