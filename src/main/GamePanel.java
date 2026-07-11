@@ -1,12 +1,14 @@
 package main;
 
+import entity.Player;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class GamePanel extends JPanel implements Runnable {
     final int originalTileSize = 16;
     final int scale = 3;
-    final int tileSize = originalTileSize * scale; // width and height of tile
+    public  int tileSize = originalTileSize * scale; // width and height of tile
     final int maxScreenCol = 16; // number of col tile
     final int maxScreenRow = 12;// number of row tile
     final int screenWidth = maxScreenCol * tileSize;
@@ -16,12 +18,14 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
     // game player position
 
+
     int playerX = 100;
     int playerY = 100;
     int playerSpeed = 4;
 
     KeyHandler keyH = new KeyHandler();
 
+    Player player = new Player(this,keyH);
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenheight));
         this.setBackground(Color.black);
@@ -160,27 +164,13 @@ Time 42ms: Next cycle starts..
 }
 } */
     public void update() {
-        if (keyH.upPressed) {
-            playerY -= playerSpeed;
-        }
-        if (keyH.downPressed) {
-            playerY += playerSpeed;
-        }
-        if (keyH.rightPressed) {
-            playerX += playerSpeed;
-        }
-
-        if (keyH.leftPressed) {
-            playerX -= playerSpeed;
-        }
-
+        player.update();
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(Color.white);
-        g2.fillRect(playerX, playerY, tileSize, tileSize);
+        player.Draw(g2);
         g2.dispose();
     }
 }
